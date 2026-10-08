@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
-export const API_BASE_URL = import.meta.env["VITE_API_BASE_URL"] || "http://localhost:5000/api/v1";
+export const API_BASE_URL =
+  import.meta.env["VITE_API_BASE_URL"] || "https://spa-website-backend-1.onrender.com/api/v1";
 export const API_ORIGIN = new URL(API_BASE_URL).origin;
 
 const TOKEN_KEY = "salus-token";
