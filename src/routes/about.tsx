@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { PageHero, SectionHeading } from "@/components/shared";
 import { useContent, useTeam } from "@/hooks/use-data";
 import { img } from "@/lib/images";
-import { demoSiteCopy, demoTeam, wellnessPillars } from "@/lib/demo-content";
+import { demoSiteCopy, demoTeam, visitJourney, wellnessPillars } from "@/lib/demo-content";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -82,6 +82,27 @@ function About() {
           height={1050}
           className="image-premium aspect-[4/5] w-full object-cover md:order-1"
         />
+      </section>
+      <section className="section-space bg-earth text-earth-foreground">
+        <div className="container-spa">
+          <div className="mx-auto mb-12 max-w-3xl text-center lg:mb-16">
+            <p className="eyebrow mb-4 text-accent">Your experience</p>
+            <h2 className="display-section">From arrival to afterglow</h2>
+            <p className="body-lead mt-5 opacity-75">
+              A restorative visit is built from small, considered moments. Here is how a typical
+              journey may unfold.
+            </p>
+          </div>
+          <div className="grid gap-px overflow-hidden rounded-2xl bg-earth-foreground/15 sm:grid-cols-2 lg:grid-cols-4">
+            {visitJourney.map((step, index) => (
+              <article key={step.title} className="bg-earth p-7 lg:p-9">
+                <span className="font-display text-4xl text-accent">0{index + 1}</span>
+                <h3 className="mt-6 font-display text-3xl">{step.title}</h3>
+                <p className="mt-3 leading-relaxed opacity-75">{step.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
       <section className="section-space bg-secondary">
         <div className="container-spa grid gap-12 md:grid-cols-2 lg:gap-24">

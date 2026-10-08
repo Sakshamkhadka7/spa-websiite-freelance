@@ -34,12 +34,24 @@ export const Route = createFileRoute("/")({
 const why = [
   {
     I: Award,
-    t: "Certified therapists",
-    d: "Every therapist is trained, licensed and deeply experienced.",
+    t: "Thoughtful expertise",
+    d: "A consultation-led approach helps shape each treatment around your comfort and preferences.",
   },
-  { I: Leaf, t: "Natural ingredients", d: "Organic oils and botanicals, blended in-house." },
-  { I: Sparkles, t: "Tailored rituals", d: "Pressure, scent and focus adapted to you." },
-  { I: Clock, t: "Unhurried time", d: "No rushing — every treatment ends with tea and rest." },
+  {
+    I: Leaf,
+    t: "Botanical rituals",
+    d: "Sensory details and aromatic oils create a naturally calming atmosphere.",
+  },
+  {
+    I: Sparkles,
+    t: "Personalized care",
+    d: "Pressure, scent, pace, and focus areas can be adapted to your preferences.",
+  },
+  {
+    I: Clock,
+    t: "Unhurried moments",
+    d: "Every visit is designed to feel spacious, considered, and gently paced.",
+  },
 ];
 
 function Home() {
@@ -133,8 +145,8 @@ function Home() {
           <SectionHeading
             center
             eyebrow="Treatments"
-            title="Popular rituals"
-            text="Select one or several treatments and add them to your booking cart."
+            title="Rituals for the way you want to feel"
+            text="From calming massage to warm stone and botanical care, discover treatments designed for rest, reconnection, and a gentler pace."
           />
           <div className="grid gap-6 sm:grid-cols-2 lg:gap-8 xl:grid-cols-3">
             {services.isLoading
@@ -221,7 +233,11 @@ function Home() {
       </section>
 
       <section className="container-spa section-space">
-        <SectionHeading eyebrow="Gallery" title="Moments of calm" />
+        <SectionHeading
+          eyebrow="Gallery"
+          title="A glimpse inside your escape"
+          text="Quiet spaces, thoughtful details, and restorative rituals—each image offers a moment of the experience waiting for you."
+        />
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {featuredGallery.slice(0, 4).map((g, i) => (
             <img

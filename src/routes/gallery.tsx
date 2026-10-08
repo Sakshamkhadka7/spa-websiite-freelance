@@ -36,7 +36,12 @@ function GalleryPage() {
 
   return (
     <main>
-      <PageHero eyebrow="Gallery" title="Moments of calm" image="asset:room" />
+      <PageHero
+        eyebrow="Gallery"
+        title="Step into stillness"
+        text="Discover serene spaces, considered details, and restorative rituals designed to make every visit feel like a genuine escape."
+        image="asset:room"
+      />
       <section className="container-spa section-space">
         {showingDemo && (
           <p className="mb-8 max-w-2xl rounded-2xl border border-accent/50 bg-accent/15 px-5 py-4 text-sm text-foreground/80">

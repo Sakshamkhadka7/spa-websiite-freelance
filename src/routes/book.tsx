@@ -68,6 +68,10 @@ function Book() {
     <main className="container-spa section-space">
       <p className="eyebrow mb-3">Your ritual</p>
       <h1 className="display-section">Book your appointment</h1>
+      <p className="body-lead mt-5 max-w-3xl text-muted-foreground">
+        Choose a preferred date and time, then tell us anything that would help make your visit more
+        comfortable. Your request will appear in your dashboard after submission.
+      </p>
       <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_minmax(25rem,32rem)] xl:gap-16">
         <div className="space-y-3">
           {selected.map((s) => (

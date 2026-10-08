@@ -200,11 +200,45 @@ export const wellnessPillars = [
   },
 ] as const;
 
+export const visitJourney = [
+  {
+    title: "Arrive",
+    text: "Settle in, slow your breathing, and share what your body needs from the experience.",
+  },
+  {
+    title: "Personalize",
+    text: "Choose your preferred pressure, focus areas, and sensory details with your therapist.",
+  },
+  {
+    title: "Restore",
+    text: "Enjoy uninterrupted treatment time shaped around comfort, calm, and meaningful rest.",
+  },
+  {
+    title: "Return gently",
+    text: "Take a quiet moment after your ritual and leave with simple, thoughtful aftercare guidance.",
+  },
+] as const;
+
+export const treatmentGuide = [
+  {
+    title: "For everyday tension",
+    text: "Choose flowing relaxation massage when you want to unwind and reconnect with a calmer pace.",
+  },
+  {
+    title: "For focused recovery",
+    text: "Consider targeted bodywork when particular areas feel tired, tight, or in need of attention.",
+  },
+  {
+    title: "For sensory escape",
+    text: "Explore warm stones or botanical aromatherapy for an enveloping, deeply comforting ritual.",
+  },
+] as const;
+
 export const demoSiteCopy = {
-  tagline: "Massage, ritual, and meaningful rest",
-  heroTitle: "Return to yourself",
+  tagline: "Where wellness meets pure relaxation",
+  heroTitle: "Escape the ordinary. Return to yourself.",
   heroSubtitle:
-    "A calm, contemporary sanctuary for restorative massage, botanical rituals, and unhurried moments of wellbeing.",
+    "Step into a calm, contemporary sanctuary for restorative massage, botanical rituals, and unhurried moments created around you.",
   aboutStory:
     "Salus Per Aquam is imagined as a modern wellness sanctuary where skilled therapeutic care meets the quiet beauty of traditional spa ritual. Each visit is shaped around the individual — from pressure and focus areas to scent, pace, and the way you want to feel when you leave.",
   mission:

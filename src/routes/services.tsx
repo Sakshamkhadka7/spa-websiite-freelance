@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EmptyState, PageHero } from "@/components/shared";
+import { EmptyState, PageHero, SectionHeading } from "@/components/shared";
 import { ServiceCard } from "@/components/service-card";
 import { useServices } from "@/hooks/use-data";
 import { cn } from "@/lib/utils";
-import { demoServices } from "@/lib/demo-content";
+import { demoServices, treatmentGuide } from "@/lib/demo-content";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -36,8 +36,8 @@ function ServicesPage() {
     <main>
       <PageHero
         eyebrow="Treatments"
-        title="Our services"
-        text="Add one or more rituals to your booking cart, then choose your date and time."
+        title="Restore your balance. Renew your energy."
+        text="Explore massage, facial, and botanical rituals, then choose the experience that best matches how you want to feel."
         image="asset:hotstone"
       />
       <section className="container-spa section-space">
@@ -78,6 +78,25 @@ function ServicesPage() {
             ))}
           </div>
         )}
+      </section>
+      <section className="section-space border-t bg-secondary">
+        <div className="container-spa">
+          <SectionHeading
+            center
+            eyebrow="Find your ritual"
+            title="Not sure where to begin?"
+            text="Use these simple intentions as a starting point. Treatment suitability and preferences can be discussed when you book."
+          />
+          <div className="grid gap-6 md:grid-cols-3">
+            {treatmentGuide.map((item, index) => (
+              <article key={item.title} className="surface-card p-7 lg:p-9">
+                <span className="eyebrow">Intention 0{index + 1}</span>
+                <h2 className="heading-card mt-5">{item.title}</h2>
+                <p className="mt-3 leading-relaxed text-muted-foreground">{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
     </main>
   );

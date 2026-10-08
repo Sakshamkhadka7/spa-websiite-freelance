@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Facebook, Flower2, Instagram, Menu, ShoppingBag, Twitter, X } from "lucide-react";
+import { Facebook, Instagram, Menu, ShoppingBag, Twitter, X } from "lucide-react";
+import lavishSpaLogo from "@/assets/lavishspa.jpeg";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -33,17 +34,19 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 px-3 py-3 sm:px-5" aria-label="Site header">
       <div className="container-spa overflow-hidden rounded-[1.75rem] border border-white/70 bg-background/95 px-4 shadow-[0_12px_35px_-18px_rgba(45,52,32,0.5)] backdrop-blur-xl sm:px-6">
-        <div className="flex min-h-16 items-center justify-between gap-4 2xl:min-h-20">
-          <Link to="/" className="group flex shrink-0 items-center gap-2.5 leading-none">
-            <Flower2 className="h-8 w-8 stroke-[1.35] text-primary transition-transform duration-300 group-hover:rotate-6" />
-            <span className="flex flex-col">
-              <span className="font-display text-2xl text-foreground">
-                {content?.logoText || content?.spaName || "Salus Per Aquam"}
-              </span>
-              <span className="mt-0.5 text-[0.55rem] uppercase tracking-[0.28em] text-muted-foreground">
-                Per Aquam
-              </span>
-            </span>
+        <div className="flex min-h-20 items-center justify-between gap-4 2xl:min-h-24">
+          <Link
+            to="/"
+            className="group flex shrink-0 items-center leading-none"
+            aria-label={`${content?.spaName || "The Lavish Spa"} home`}
+          >
+            <img
+              src={lavishSpaLogo}
+              alt="The Lavish Spa"
+              width={1600}
+              height={1600}
+              className="h-16 w-16 rounded-xl bg-[#251f1f] object-contain shadow-[0_8px_22px_-12px_rgba(37,31,31,0.8)] ring-1 ring-[#d9ad68]/45 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_12px_28px_-12px_rgba(37,31,31,0.9)] sm:h-[4.5rem] sm:w-[4.5rem]"
+            />
           </Link>
 
           <nav className="hidden items-center gap-5 xl:flex 2xl:gap-8" aria-label="Main navigation">

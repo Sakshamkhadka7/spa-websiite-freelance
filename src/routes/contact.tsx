@@ -41,7 +41,12 @@ function Contact() {
   };
   return (
     <main>
-      <PageHero eyebrow="Contact" title="We'd love to hear from you" image="asset:aroma" />
+      <PageHero
+        eyebrow="Contact"
+        title="Your journey to relaxation begins here"
+        text="Whether you are choosing your first treatment or planning a return visit, we are here to make the experience feel simple and personal."
+        image="asset:aroma"
+      />
       <section className="container-spa section-space grid gap-12 md:grid-cols-2 lg:gap-20">
         <div className="space-y-7 text-[1.05rem] lg:pt-4">
           <div className="mb-9">
@@ -81,6 +86,14 @@ function Contact() {
           onSubmit={handleSubmit(onSubmit)}
           className="surface-card space-y-5 p-6 sm:p-8 lg:p-10"
         >
+          <div className="border-b pb-5">
+            <p className="eyebrow mb-2">Send an enquiry</p>
+            <h2 className="heading-card">How can we help?</h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Share your question or preferred experience. Please avoid including sensitive health
+              information in this general enquiry form.
+            </p>
+          </div>
           <Field label="Name" error={errors.name?.message}>
             <Input {...register("name")} />
           </Field>
