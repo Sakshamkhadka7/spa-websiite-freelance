@@ -33,11 +33,13 @@ export interface TeamMember {
   experience: number;
   bio: string;
   image: string;
+  active: boolean;
 }
 
 export interface GalleryItem {
   id: string;
   image: string;
+  title: string;
   caption: string;
   category: string;
   visible: boolean;
@@ -86,6 +88,7 @@ export interface OpeningHour {
 export interface SiteContent {
   spaName: string;
   logoText: string;
+  logo: string;
   tagline: string;
   hero: { title: string; subtitle: string; image: string };
   about: { story: string; mission: string; values: string[]; facilities: string[] };
@@ -100,6 +103,29 @@ export interface SiteContent {
 export interface Customer extends User {
   bookingCount: number;
   totalSpent: number;
+  lastBooking?: string | null;
+}
+
+export interface DashboardStats {
+  totalCustomers: number;
+  totalBookings: number;
+  todayBookings: number;
+  pending: number;
+  contacted: number;
+  confirmed: number;
+  completed: number;
+  cancelled: number;
+  paid: number;
+  unpaid: number;
+  recentBookings: Booking[];
+  upcomingAppointments: Booking[];
+}
+
+export interface CustomerDetails {
+  customer: User;
+  bookings: Booking[];
+  totalBookings: number;
+  lastBooking: Booking | null;
 }
 
 /** Image value in forms: either an existing URL or a newly picked file. */

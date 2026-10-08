@@ -9,11 +9,19 @@ export const registerSchema = z
   .object({
     name: z.string().trim().min(2, "Name is too short").max(80),
     email: z.string().trim().email("Enter a valid email").max(255),
-    phone: z.string().trim().min(7, "Enter a valid phone").max(20).regex(/^[+\d\s()-]+$/, "Enter a valid phone"),
-    password: z.string().min(6, "At least 6 characters").max(100),
+    phone: z
+      .string()
+      .trim()
+      .min(7, "Enter a valid phone")
+      .max(20)
+      .regex(/^[+\d\s()-]+$/, "Enter a valid phone"),
+    password: z.string().min(8, "At least 8 characters").max(100),
     confirmPassword: z.string(),
   })
-  .refine((d) => d.password === d.confirmPassword, { message: "Passwords do not match", path: ["confirmPassword"] });
+  .refine((d) => d.password === d.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 export const profileSchema = z.object({
   name: z.string().trim().min(2).max(80),
@@ -42,6 +50,7 @@ export const teamSchema = z.object({
 });
 
 export const gallerySchema = z.object({
+  title: z.string().trim().max(120).default(""),
   caption: z.string().trim().min(2).max(120),
   category: z.string().trim().min(2).max(40),
   visible: z.boolean(),

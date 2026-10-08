@@ -1,70 +1,93 @@
-import { api, resolveImageInput, toFormData, USE_MOCK } from "@/lib/api";
-import { db, delay, persist, uid } from "@/lib/mock-db";
+import { api, toFormData } from "@/lib/api";
 import type { GalleryItem, ImageInput, Service, SiteContent, TeamMember } from "@/types";
-
 type WithImage<T> = Omit<T, "id" | "image"> & { image: ImageInput };
 export type ServiceInput = WithImage<Service>;
 export type TeamInput = WithImage<TeamMember>;
 export type GalleryInput = WithImage<GalleryItem>;
-
-type Collection = "services" | "team" | "gallery";
-
-/** Generic CRUD that maps to REST: GET/POST /{path}, PUT/DELETE /{path}/:id (multipart for images). */
-function crud<T extends { id: string; image: string }>(key: Collection, path: string) {
-  const list = () => db()[key] as unknown as T[];
+function crud<T extends { id: string; image: string }>(path: string) {
   return {
     async list(): Promise<T[]> {
-      if (!USE_MOCK) return (await api.get<T[]>(path)).data;
-      await delay();
-      return [...list()];
+      return (await api.get<T[]>(path, { params: { limit: 100 } })).data;
+    },
+    async listAll(): Promise<T[]> {
+      return (await api.get<T[]>(`${path}/admin/all`, { params: { limit: 100 } })).data;
     },
     async create(input: WithImage<T>): Promise<T> {
-      if (!USE_MOCK) return (await api.post<T>(path, toFormData(input))).data;
-      await delay();
-      const item = { ...input, id: uid(), image: await resolveImageInput(input.image) } as unknown as T;
-      list().unshift(item);
-      persist();
-      return item;
+      return (await api.post<T>(path, toFormData(input))).data;
     },
     async update(id: string, input: Partial<WithImage<T>>): Promise<T> {
-      if (!USE_MOCK) return (await api.put<T>(`${path}/${id}`, toFormData(input))).data;
-      await delay();
-      const item = list().find((x) => x.id === id);
-      if (!item) throw new Error("Not found");
-      const { image, ...rest } = input;
-      Object.assign(item, rest);
-      if (image !== undefined) item.image = await resolveImageInput(image);
-      persist();
-      return item;
+      return (await api.put<T>(`${path}/${id}`, toFormData(input))).data;
     },
     async remove(id: string): Promise<void> {
-      if (!USE_MOCK) { await api.delete(`${path}/${id}`); return; }
-      await delay();
-      const arr = list();
-      arr.splice(arr.findIndex((x) => x.id === id), 1);
-      persist();
+      await api.delete(`${path}/${id}`);
     },
   };
 }
+export const servicesService = crud<Service>("/services");
+export const teamService = crud<TeamMember>("/team");
+export const galleryService = {
+  ...crud<GalleryItem>("/gallery"),
+  async createMany(files: File[], input: Partial<GalleryInput>): Promise<GalleryItem[]> {
+    const data = toFormData(input);
+    files.forEach((file) => data.append("images", file));
+    return (await api.post<GalleryItem[]>("/gallery/multiple", data)).data;
+  },
+};
 
-export const servicesService = crud<Service>("services", "/services");
-export const teamService = crud<TeamMember>("team", "/team");
-export const galleryService = crud<GalleryItem>("gallery", "/gallery");
+function normalizeContent(value: Partial<SiteContent>): SiteContent {
+  return {
+    spaName: value.spaName || "Salus Per Aquam",
+    logoText: value.logoText || value.spaName || "Salus Per Aquam",
+    logo: value.logo || "",
+    tagline: value.tagline || "",
+    hero: {
+      title: value.hero?.title || "",
+      subtitle: value.hero?.subtitle || "",
+      image: value.hero?.image || "",
+    },
+    about: {
+      story: value.about?.story || "",
+      mission: value.about?.mission || "",
+      values: Array.isArray(value.about?.values) ? value.about.values : [],
+      facilities: Array.isArray(value.about?.facilities) ? value.about.facilities : [],
+    },
+    contact: {
+      phone: value.contact?.phone || "",
+      email: value.contact?.email || "",
+      address: value.contact?.address || "",
+    },
+    openingHours: Array.isArray(value.openingHours) ? value.openingHours : [],
+    social: {
+      facebook: value.social?.facebook || "",
+      instagram: value.social?.instagram || "",
+      twitter: value.social?.twitter || "",
+    },
+    footerText: value.footerText || "",
+    currency: value.currency || "$",
+    timeSlots: Array.isArray(value.timeSlots) ? value.timeSlots : [],
+  };
+}
 
 export const contentService = {
-  // GET /content
   async get(): Promise<SiteContent> {
-    if (!USE_MOCK) return (await api.get<SiteContent>("/content")).data;
-    await delay(150);
-    return structuredClone(db().content);
+    return normalizeContent((await api.get<Partial<SiteContent>>("/website")).data);
   },
-  // PUT /content
-  async update(input: SiteContent, heroImage?: File): Promise<SiteContent> {
-    if (!USE_MOCK) return (await api.put<SiteContent>("/content", toFormData({ ...input, heroImage }))).data;
-    await delay();
-    const next = { ...input, hero: { ...input.hero, image: heroImage ? await resolveImageInput(heroImage) : input.hero.image } };
-    db().content = next;
-    persist();
-    return next;
+  async update(input: SiteContent, heroImage?: File, logo?: File): Promise<SiteContent> {
+    const clean: SiteContent = {
+      ...input,
+      about: {
+        ...input.about,
+        values: input.about.values.map((value) => value.trim()).filter(Boolean),
+        facilities: input.about.facilities.map((value) => value.trim()).filter(Boolean),
+      },
+      timeSlots: input.timeSlots.map((value) => value.trim()).filter(Boolean),
+      openingHours: input.openingHours
+        .map(({ day, hours }) => ({ day: day.trim(), hours: hours.trim() }))
+        .filter(({ day, hours }) => day && hours),
+    };
+    return normalizeContent(
+      (await api.put<Partial<SiteContent>>("/website", toFormData({ ...clean, heroImage, logo })))
+        .data,
+    );
   },
 };

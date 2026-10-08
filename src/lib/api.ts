@@ -1,21 +1,18 @@
 import axios, { AxiosError } from "axios";
-import type { ImageInput } from "@/types";
-import { fileToDataUrl } from "./images";
-
-/**
- * Set VITE_API_BASE_URL (e.g. http://localhost:5000/api) to switch every service
- * from the local mock store to the Express/MongoDB REST API.
- */
-export const API_BASE_URL: string | undefined = import.meta.env.VITE_API_BASE_URL;
-export const USE_MOCK = !API_BASE_URL;
+export const API_BASE_URL = import.meta.env["VITE_API_BASE_URL"] || "http://localhost:5000/api/v1";
+export const API_ORIGIN = new URL(API_BASE_URL).origin;
 
 const TOKEN_KEY = "salus-token";
 const USER_KEY = "salus-user";
 
 export const tokenStorage = {
-  get: (): string | null => (typeof window === "undefined" ? null : localStorage.getItem(TOKEN_KEY)),
-  set: (t: string) => localStorage.setItem(TOKEN_KEY, t),
+  get: (): string | null =>
+    typeof window === "undefined" ? null : localStorage.getItem(TOKEN_KEY),
+  set: (t: string) => {
+    if (typeof window !== "undefined") localStorage.setItem(TOKEN_KEY, t);
+  },
   clear: () => {
+    if (typeof window === "undefined") return;
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
   },
@@ -27,7 +24,9 @@ export const userStorage = {
     const raw = localStorage.getItem(USER_KEY);
     return raw ? (JSON.parse(raw) as T) : null;
   },
-  set: (u: unknown) => localStorage.setItem(USER_KEY, JSON.stringify(u)),
+  set: (u: unknown) => {
+    if (typeof window !== "undefined") localStorage.setItem(USER_KEY, JSON.stringify(u));
+  },
 };
 
 export const api = axios.create({ baseURL: API_BASE_URL, headers: { Accept: "application/json" } });
@@ -37,6 +36,27 @@ api.interceptors.request.use((config) => {
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
+
+// The production API uses a consistent { success, message, data, pagination }
+// envelope. Unwrap it here so the existing service/type layer stays unchanged.
+api.interceptors.response.use(
+  (response) => {
+    const body = response.data as { success?: boolean; data?: unknown } | undefined;
+    if (body?.success === true && Object.prototype.hasOwnProperty.call(body, "data"))
+      response.data = body.data;
+    return response;
+  },
+  (error: AxiosError) => {
+    if (error.response?.status === 401) {
+      tokenStorage.clear();
+      if (typeof window !== "undefined" && !window.location.pathname.includes("/login")) {
+        const admin = window.location.pathname.startsWith("/admin");
+        window.location.assign(admin ? "/admin/login" : "/login");
+      }
+    }
+    return Promise.reject(error);
+  },
+);
 
 export function getErrorMessage(err: unknown): string {
   if (err instanceof AxiosError) {
@@ -59,7 +79,8 @@ export function toFormData(payload: Record<string, unknown>): FormData {
   return fd;
 }
 
-/** Mock helper: turn a picked File into a storable data URL. */
-export async function resolveImageInput(image: ImageInput): Promise<string> {
-  return typeof image === "string" ? image : fileToDataUrl(image);
+export function backendImageUrl(value?: string): string {
+  if (!value) return "";
+  if (/^(https?:|data:|blob:)/.test(value) || value.startsWith("asset:")) return value;
+  return `${API_ORIGIN}${value.startsWith("/") ? value : `/${value}`}`;
 }

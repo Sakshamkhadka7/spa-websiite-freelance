@@ -1,9 +1,15 @@
 import { useMutation, useQuery, useQueryClient, type QueryKey } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/api";
-import { seed } from "@/lib/seed";
 import { bookingService } from "@/services/booking.service";
-import { contentService, galleryService, servicesService, teamService } from "@/services/catalog.service";
+import {
+  contentService,
+  galleryService,
+  servicesService,
+  teamService,
+} from "@/services/catalog.service";
+import { dashboardService } from "@/services/dashboard.service";
+import { userService } from "@/services/user.service";
 import { useAuth } from "./use-auth";
 
 export const keys = {
@@ -14,14 +20,33 @@ export const keys = {
   bookings: ["bookings"] as const,
   myBookings: (id: string) => ["bookings", "me", id] as const,
   customers: ["customers"] as const,
+  dashboard: ["admin-dashboard"] as const,
+  adminServices: ["admin-services"] as const,
+  adminTeam: ["admin-team"] as const,
+  adminGallery: ["admin-gallery"] as const,
 };
 
-export const useServices = () => useQuery({ queryKey: keys.services, queryFn: servicesService.list });
+export const useServices = () =>
+  useQuery({ queryKey: keys.services, queryFn: servicesService.list });
 export const useTeam = () => useQuery({ queryKey: keys.team, queryFn: teamService.list });
 export const useGallery = () => useQuery({ queryKey: keys.gallery, queryFn: galleryService.list });
-export const useContent = () => useQuery({ queryKey: keys.content, queryFn: contentService.get, placeholderData: seed().content });
-export const useAllBookings = () => useQuery({ queryKey: keys.bookings, queryFn: bookingService.all });
-export const useCustomers = () => useQuery({ queryKey: keys.customers, queryFn: bookingService.customers });
+export const useContent = () =>
+  useQuery({
+    queryKey: keys.content,
+    queryFn: contentService.get,
+  });
+export const useAllBookings = () =>
+  useQuery({ queryKey: keys.bookings, queryFn: () => bookingService.all() });
+export const useCustomers = () =>
+  useQuery({ queryKey: keys.customers, queryFn: () => userService.list() });
+export const useDashboard = () =>
+  useQuery({ queryKey: keys.dashboard, queryFn: dashboardService.get });
+export const useAdminServices = () =>
+  useQuery({ queryKey: keys.adminServices, queryFn: servicesService.listAll });
+export const useAdminTeam = () =>
+  useQuery({ queryKey: keys.adminTeam, queryFn: teamService.listAll });
+export const useAdminGallery = () =>
+  useQuery({ queryKey: keys.adminGallery, queryFn: galleryService.listAll });
 
 export function useMyBookings() {
   const { user } = useAuth();
