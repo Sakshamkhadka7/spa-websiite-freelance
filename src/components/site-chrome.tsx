@@ -31,7 +31,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 px-3 py-3 sm:px-5">
+    <header className="sticky top-0 z-40 px-3 py-3 sm:px-5" aria-label="Site header">
       <div className="container-spa overflow-hidden rounded-[1.75rem] border border-white/70 bg-background/95 px-4 shadow-[0_12px_35px_-18px_rgba(45,52,32,0.5)] backdrop-blur-xl sm:px-6">
         <div className="flex min-h-16 items-center justify-between gap-4 2xl:min-h-20">
           <Link to="/" className="group flex shrink-0 items-center gap-2.5 leading-none">
@@ -242,7 +242,8 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-earth-foreground/10 py-5 text-center text-xs opacity-60">
-        © {new Date().getFullYear()} {c.spaName}. All rights reserved.
+        © {new Date().getFullYear()} {c.spaName}. All rights reserved. Demo business details for
+        presentation.
       </div>
     </footer>
   );

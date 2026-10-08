@@ -49,7 +49,13 @@ export function PageHero({
 }) {
   return (
     <section className="relative flex min-h-[28rem] items-end overflow-hidden md:min-h-[34rem] 2xl:min-h-[40rem]">
-      <img src={img(image)} alt="" className="absolute inset-0 h-full w-full object-cover" />
+      <img
+        src={img(image)}
+        alt=""
+        width={1920}
+        height={1080}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
       <div className="absolute inset-0 bg-veil" />
       <div className="container-spa relative pb-14 pt-36 text-earth-foreground fade-up md:pb-20 2xl:pb-24">
         <p className="eyebrow mb-4 text-accent">{eyebrow}</p>

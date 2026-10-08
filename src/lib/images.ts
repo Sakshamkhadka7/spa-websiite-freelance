@@ -1,35 +1,24 @@
-import hero from "@/assets/hero.jpg";
-import aroma from "@/assets/aroma.jpg";
-import hotstone from "@/assets/hotstone.jpg";
-import room from "@/assets/room.jpg";
-import team1 from "@/assets/team1.jpg";
-import team2 from "@/assets/team2.jpg";
-import therapistMassage from "@/assets/pexels-therapist-massage.jpg";
-import pexelsHotstone from "@/assets/pexels-hot-stone.jpg";
-import facial from "@/assets/pexels-facial.jpg";
-import ritual from "@/assets/pexels-ritual.jpg";
-import spaInterior from "@/assets/pexels-spa-interior.jpg";
-import couplesMassage from "@/assets/pexels-couples-massage.jpg";
-import facialNeutral from "@/assets/pexels-facial-neutral.jpg";
 import { backendImageUrl } from "./api";
 
+const spaAsset = (name: string) => `/assets/spa/${name}`;
+
 const assets: Record<string, string> = {
-  hero,
-  aroma,
-  hotstone,
-  room,
-  team1,
-  team2,
-  therapistMassage,
-  pexelsHotstone,
-  facial,
-  ritual,
-  spaInterior,
-  couplesMassage,
-  facialNeutral,
+  hero: spaAsset("spa-hero.jpg"),
+  aroma: spaAsset("aromatherapy-essentials.jpg"),
+  hotstone: spaAsset("hot-stone-massage.jpg"),
+  room: spaAsset("luxury-massage-room.jpg"),
+  team1: spaAsset("therapist-amara.jpg"),
+  team2: spaAsset("therapist-maya.jpg"),
+  therapistMassage: spaAsset("professional-massage-treatment.jpg"),
+  pexelsHotstone: spaAsset("warm-stone-therapy.jpg"),
+  facial: spaAsset("facial-treatment.jpg"),
+  ritual: spaAsset("wellness-ritual.jpg"),
+  spaInterior: spaAsset("spa-interior.jpg"),
+  couplesMassage: spaAsset("couples-massage.jpg"),
+  facialNeutral: spaAsset("facial-ritual.jpg"),
 };
 
-/** Seed data references bundled images as "asset:<key>" so URLs survive rebuilds. */
+/** Seed data references local images as "asset:<key>" while API media stays dynamic. */
 export function img(src: string): string {
   if (src.startsWith("asset:")) return assets[src.slice(6)] ?? "";
   return backendImageUrl(src);

@@ -116,6 +116,12 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <a
+          href="#main-content"
+          className="fixed left-4 top-4 z-[100] -translate-y-24 rounded-full bg-earth px-5 py-3 text-sm font-medium text-earth-foreground shadow-soft transition-transform focus:translate-y-0"
+        >
+          Skip to main content
+        </a>
         {children}
         <Scripts />
       </body>
@@ -133,7 +139,9 @@ function RootComponent() {
       <AuthProvider>
         <CartProvider>
           {!isPanel && <SiteHeader />}
-          <Outlet />
+          <div id="main-content">
+            <Outlet />
+          </div>
           {!isPanel && <SiteFooter />}
           <Toaster richColors position="top-right" />
         </CartProvider>

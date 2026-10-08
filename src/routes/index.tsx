@@ -79,7 +79,7 @@ function Home() {
                 size="lg"
                 className="bg-accent text-accent-foreground hover:bg-accent/90"
               >
-                <Link to="/services">Book Appointment</Link>
+                <Link to="/services">Explore treatments</Link>
               </Button>
               <Button
                 asChild
@@ -90,6 +90,22 @@ function Home() {
                 <Link to="/about">Our Story</Link>
               </Button>
             </div>
+          </div>
+        </div>
+        <div className="absolute inset-x-0 bottom-0 hidden border-t border-white/20 bg-earth/35 backdrop-blur-md md:block">
+          <div className="container-spa grid grid-cols-3 divide-x divide-white/15 py-5 text-earth-foreground">
+            <p className="px-6 text-sm tracking-wide">
+              <span className="block font-display text-xl">Tailored care</span>
+              <span className="opacity-70">Rituals shaped around you</span>
+            </p>
+            <p className="px-6 text-sm tracking-wide">
+              <span className="block font-display text-xl">Botanical calm</span>
+              <span className="opacity-70">Natural oils and sensory detail</span>
+            </p>
+            <p className="px-6 text-sm tracking-wide">
+              <span className="block font-display text-xl">Unhurried time</span>
+              <span className="opacity-70">Space to arrive and restore</span>
+            </p>
           </div>
         </div>
       </section>
